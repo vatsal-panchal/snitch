@@ -1,0 +1,200 @@
+# =========================================================
+# Dependencies
+# =========================================================
+
+node_modules/
+**/node_modules/
+
+
+# =========================================================
+# Environment / Secrets
+# =========================================================
+
+.env
+.env.*
+!.env.example
+
+# In case env files exist inside frontend/backend
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+
+# =========================================================
+# Build / Production
+# =========================================================
+
+dist/
+build/
+out/
+
+frontend/dist/
+frontend/build/
+frontend/out/
+
+backend/dist/
+backend/build/
+backend/out/
+
+
+# =========================================================
+# Framework Caches
+# =========================================================
+
+.next/
+.nuxt/
+.svelte-kit/
+.astro/
+.vite/
+.cache/
+.parcel-cache/
+.turbo/
+
+frontend/.vite/
+frontend/.next/
+frontend/.vercel/
+
+backend/.cache/
+
+
+# =========================================================
+# Logs
+# =========================================================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+logs/
+
+
+# =========================================================
+# Coverage / Testing
+# =========================================================
+
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+cypress/videos/
+cypress/screenshots/
+
+
+# =========================================================
+# Database / Local Data
+# =========================================================
+
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Local data directories
+data/
+tmp/
+temp/
+
+
+# =========================================================
+# Uploads / User Generated Files
+# =========================================================
+
+uploads/
+backend/uploads/
+frontend/uploads/
+
+storage/
+backend/storage/
+
+
+# =========================================================
+# OS Files
+# =========================================================
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+
+# =========================================================
+# VS Code / IDE
+# =========================================================
+
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+.idea/
+*.iml
+
+
+# =========================================================
+# Temporary / Backup Files
+# =========================================================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+
+# =========================================================
+# TypeScript / Build Cache
+# =========================================================
+
+*.tsbuildinfo
+.eslintcache
+
+
+# =========================================================
+# Vercel / Netlify / Firebase / Serverless
+# =========================================================
+
+.vercel/
+.netlify/
+.firebase/
+.serverless/
+.aws-sam/
+
+
+# =========================================================
+# Terraform
+# =========================================================
+
+.terraform/
+*.tfstate
+*.tfstate.*
+
+
+# =========================================================
+# Local Certificates / Private Keys
+# =========================================================
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+
+# =========================================================
+# Credential / Secret Files
+# =========================================================
+
+credentials.json
+service-account*.json
+*-credentials*.json
+
+secrets/
+credentials/
