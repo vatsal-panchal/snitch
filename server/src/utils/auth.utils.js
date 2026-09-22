@@ -26,3 +26,9 @@ export const createRefreshToken = ({ userId, role }) => {
 
   return refreshToken;
 };
+
+export const verifyRefreshToken = (token) => {
+  const decoded = jwt.verify(token, config.REFRESH_TOKEN_SECRET);
+
+  return decoded;
+};

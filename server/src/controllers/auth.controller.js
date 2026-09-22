@@ -1,6 +1,10 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { createAccessToken, createRefreshToken } from "../utils/auth.utils.js";
+import {
+  createAccessToken,
+  createRefreshToken,
+  verifyRefreshToken,
+} from "../utils/auth.utils.js";
 
 export const registerController = async (req, res) => {
   const { email, name, password } = req.body;
@@ -110,4 +114,54 @@ export const loginController = async (req, res) => {
     },
     accessToken,
   });
+};
+
+export const refreshController = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({
+      message: "Refresh token not found",
+    });
+  }
+
+  try {
+    const decoded = verifyRefreshToken(refreshToken);
+
+    const { userId, role } = decoded;
+
+    const user = await userModel.findById(userId);
+
+    if (refreshToken !== user.refreshToken) {
+      await userModel.findByIdAndUpdate(user._id, {
+        refreshToken: null,
+      });
+
+      return res.status(401).json({
+        message: "Refresh token mismatch",
+      });
+    }
+
+    const accessToken = createAccessToken({
+      userId: user._id,
+      role: user.role,
+    });
+
+    const refreshToken = createRefreshToken({
+      userId: user._id,
+      role: user.role,
+    });
+
+    await userModel.findByIdAndUpdate(user._id, {
+      refreshToken,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      message: "invalid refresh token",
+    });
+  }
 };
