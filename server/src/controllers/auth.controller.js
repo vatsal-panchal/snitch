@@ -1,6 +1,6 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { createRefreshToken } from "../utils/auth.utils.js";
+import { createAccessToken, createRefreshToken } from "../utils/auth.utils.js";
 
 export const registerController = async (req, res) => {
   const { email, name, password } = req.body;
@@ -35,4 +35,19 @@ export const registerController = async (req, res) => {
     role: user.role,
   });
 
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+  });
+
+  res.status(201).json({
+    message: "user registered successfully",
+    data: {
+      user: {
+        name: user.name,
+        email: user.email,
+        id: user._id,
+      },
+    },
+    accessToken,
+  });
 };
