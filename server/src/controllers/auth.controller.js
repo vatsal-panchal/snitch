@@ -35,6 +35,13 @@ export const registerController = async (req, res) => {
     role: user.role,
   });
 
+  // user.refreshToken = refreshToken
+  // await user.save()
+
+  await userModel.findByIdAndUpdate(user._id, {
+    refreshToken,
+  });
+
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
   });
@@ -46,6 +53,59 @@ export const registerController = async (req, res) => {
         name: user.name,
         email: user.email,
         id: user._id,
+      },
+    },
+    accessToken,
+  });
+};
+
+export const loginController = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email });
+
+  if (!user) {
+    return res.status(400).json({
+      message: "invalid email or password",
+    });
+  }
+
+  const isValidPassword = await bcrypt.compare(password, user.password);
+
+  if (!isValidPassword) {
+    return res.status(400).json({
+      message: "invalid email or password",
+    });
+  }
+
+  const accessToken = createAccessToken({
+    userId: user._id,
+    role: user.role,
+  });
+
+  const refreshToken = createRefreshToken({
+    userId: user._id,
+    role: user.role,
+  });
+
+  await userModel.findOneAndUpdate(
+    { email },
+    {
+      refreshToken,
+    },
+  );
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    message: "user loggedIn successfully",
+    data: {
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       },
     },
     accessToken,
