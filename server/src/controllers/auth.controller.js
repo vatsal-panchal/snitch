@@ -147,21 +147,57 @@ export const refreshController = async (req, res) => {
       role: user.role,
     });
 
-    const refreshToken = createRefreshToken({
+    const newRefreshToken = createRefreshToken({
       userId: user._id,
       role: user.role,
     });
 
     await userModel.findByIdAndUpdate(user._id, {
-      refreshToken,
+      refreshToken: newRefreshToken,
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+    });
+
+    res.status(200).json({
+      message: "Token rotated sucessfully",
+      data: {
+        user: {
+          name: user.name,
+          email: user.email,
+          id: user._id,
+        },
+        accessToken,
+      },
     });
   } catch (error) {
     return res.status(401).json({
       message: "invalid refresh token",
     });
   }
+};
+
+export const getMeController = async (req, res) => {
+  const { userId, role } = req.user;
+
+  const user = await userModel.findById(userId);
+
+  if (!user) {
+    return res.status(401).json({
+      message: "user not found",
+    });
+  }
+
+  res.status(200).json({
+    message: "user fetched successfully",
+    data: {
+      user: {
+        name: user.name,
+        email: user.email,
+        id: user._id,
+        role: user.role,
+      },
+    },
+  });
 };

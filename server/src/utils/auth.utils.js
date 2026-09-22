@@ -8,7 +8,7 @@ export const createAccessToken = ({ userId, role }) => {
       role,
     },
     config.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" },
+    { expiresIn: "1m" },
   );
 
   return accessToken;
@@ -31,4 +31,10 @@ export const verifyRefreshToken = (token) => {
   const decoded = jwt.verify(token, config.REFRESH_TOKEN_SECRET);
 
   return decoded;
+};
+
+export const verifyAccessToken = (token) => {
+  const decoded = jwt.verify(token, config.ACCESS_TOKEN_SECRET);
+
+  return decoded
 };
